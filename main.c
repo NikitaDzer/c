@@ -1,11 +1,12 @@
 //#include "main.h"
 #include <stdio.h>
+#include "utils.h"
 
 int main(void) {
 
     long double roots[2] = { 0, 0 };
 
-    long double a = 7.7, b = 3.952, c = -2.10;
+   // long double a = 7.7, b = 3.952, c = -2.10;
     // long double a = 0, b = 5.23, c = 9.1;
     // long double a = 1, b = 0, c = -2;
     // long double a = 3.63, b = 7.27, c = 0;
@@ -25,7 +26,10 @@ int main(void) {
 
 //	printf("%d", solveQE(roots));
 
-    printf("Hello to everyone!");
+    printf("Hello to everyone!\n");
 
-    return 1;
+    int a = 0, b = 0;
+    scanf("&d %d", &a, &b);
+    printf("%d", sum(a, b));
+    return 0;
 }
