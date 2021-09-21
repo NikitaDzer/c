@@ -4,6 +4,6 @@
 /**
 * Interactive quadratic equation solver 
 */
-void solverQES();
+int solverQE();
 
 #endif

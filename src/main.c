@@ -1,9 +1,9 @@
 #include "solverQE/solverQE.h"
-#include "utils/utils.h"
+#include "utils/testQE/readyTestsQE.h"
 
 int main(void) {
-
- 
+    solverQE();
+    // readyTestsQE();
 	return 0;
 }
 

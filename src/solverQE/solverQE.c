@@ -1,36 +1,35 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <math.h>
 #include <iso646.h>
 #include "../utils/utils.h"
 #include "solverQE.h"
 
 
-void getCoefficientsQE(long double* const pA, long double* const pB, long double* const pC) {
-	printf("Type numerical coefficients of a quadratic equation.\n");
-	getSomeCoefficients(3, pA, pB, pC);
+static void getCoefficientsQE(double* const pA, double* const pB, double* const pC) {
+	printf("Type 3 numerical coefficients of a quadratic equation.\n");
+    getSomeCoefficients(3, pA, pB, pC);
 	printf("\n");
 }
 
-void printRootsQE(
-	const long double a, const long double b, const long double c,
-	const long double const roots[], const int numOfRoots
+static void printRootsQE(
+	const double a, const double b, const double c,
+	const double const roots[], const int numOfRoots
 ) {
 	char signA = a < 0 ? '-' : '\0',
 		signB = b < 0 ? '-' : '+',
 		signC = c < 0 ? '-' : '+';
-	long double absA = a < 0 ? -a : a,
+	double absA = a < 0 ? -a : a,
 		absB = b < 0 ? -b : b,
 		absC = c < 0 ? -c : c;
 
-	printf("The equation %c%Lg*X^2 %c %Lg*X %c %Lg = 0 has ", signA, absA, signB, absB, signC, absC);
+	printf("The equation %c%lg*X^2 %c %lg*X %c %lg = 0 has ", signA, absA, signB, absB, signC, absC);
 	switch (numOfRoots) {
 	case 2: {
-		printf("two real roots:\nX1 = %Lg; X2 = %Lg", roots[0], roots[1]);
+		printf("two real roots:\nX1 = %lg; X2 = %lg", roots[0], roots[1]);
 		break;
 	}
 	case 1: {
-		printf("one real root:\nX = %Lg", roots[0]);
+		printf("one real root:\nX = %lg", roots[0]);
 		break;
 	}
 	case 0: {
@@ -42,20 +41,21 @@ void printRootsQE(
 		break;
 	}
 	default:
-		printf("Invalid number of quadratic equation roots!");
+		printf("ERROR! Invalid number of quadratic equation roots!");
+        break;
 	}
 }
 
-void getAndSolveQE() {
-	long double a = 0, b = 0, c = 0;
+static void getAndSolveQE() {
+	double a = 0, b = 0, c = 0;
 	getCoefficientsQE(&a, &b, &c);
 
-	long double roots[2] = { 0, 0 };
+	double roots[2] = { 0, 0 };
 	printRootsQE(a, b, c, roots,
 		          solveQE(a, b, c, roots));
 }
 
-bool stopSolverQES() {
+static bool stopSolverQE() {
 	printf("\n\nIf you want to stop me, start the input with 'n' or 'N': ");
 
 	char userChar = getchar();
@@ -70,16 +70,21 @@ bool stopSolverQES() {
 	return false;
 }
 
-void solverQES() {
+int solverQE() {
 	printf(
 		"\nHello to you, Stranger! I'm Quadratic Equation's Solver.\n"
 		"I can solve equations of the following form: A*X^2 + B*X + C = 0.\n"
 		"-------\n"
 	);
 
+    int numOfQES = 0;
 	while (true) {
 		getAndSolveQE();
-
-		if (stopSolverQES()) break;
+        ++numOfQES;
+        
+		if (stopSolverQE()) break;
 	}
+    
+    return numOfQES;
 }
+

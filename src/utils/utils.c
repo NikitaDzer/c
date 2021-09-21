@@ -1,33 +1,30 @@
-#ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <iso646.h>
 #include <float.h>
 #include <math.h>
-#include <iso646.h>
 #include "utils.h"
 
 
-static const long double EPSILON = 100 * LDBL_EPSILON;
+static const double EPSILON = 1000 * DBL_EPSILON;
+static const double ACCURACY = 5e-5;
 
 void clearInput() {
-	while (getchar() != '\n') {};
+	while (getchar() != '\n');
 }
 
-bool isZero(const long double a) {
+bool isZero(const double a) {
 	return fabs(a) < EPSILON;
 }
 
 bool isAnyZero(const int countOfNums, ...) {
-	va_list nums;
+	va_list nums = {0};
 	va_start(nums, countOfNums);
 
 	bool wasZero = false;
 	for (int i = 0; i < countOfNums; ++i)
-		if (isZero(va_arg(nums, long double))) wasZero = true;
+		if (isZero(va_arg(nums, double))) wasZero = true;
 
 	va_end(nums);
 
@@ -35,101 +32,119 @@ bool isAnyZero(const int countOfNums, ...) {
 }
 
 bool isAllZero(const int countOfNums, ...) {
-	va_list nums;
+	va_list nums = {0};
 	va_start(nums, countOfNums);
 
 	bool allZero = true;
 	for (int i = 0; i < countOfNums; ++i)
-		if (!isZero(va_arg(nums, long double))) allZero = false;
+		if (!isZero(va_arg(nums, double))) allZero = false;
 
 	va_end(nums);
 
 	return allZero;
 }
 
-long double calcDiscriminant(const long double a, const long double b, const long double c) {
+bool isEqual(const double a, const double b) {
+    if (isZero(a)) return isZero(a - b);
+    
+    return fabs((a - b) / a) < ACCURACY;
+}
+
+bool isPositive(const double a) {
+    return !isZero(a) and isEqual(a, fabs(a));
+}
+
+double calcDiscriminant(const double a, const double b, const double c) {
 	return b * b - 4 * a * c;
 }
 
-void calcAndPutRoots(
-	long double a, const long double b, const long double discriminant,
-	long double* const pX1, long double* const pX2
-) {
-	long double sqrtDiscriminant = sqrt(discriminant),
-	            doubleA = 2 * a;
-
-	*pX1 = (-b + sqrtDiscriminant) / doubleA;
-	*pX2 = (-b - sqrtDiscriminant) / doubleA;
-}
-
-void getCoefficient(long double* const pCoefficient, const char symbolCoefficient) {
+void getCoefficient(double* const pCoefficient, const char symbolCoefficient) {
 	printf("%c: ", symbolCoefficient);
 
-	while (!scanf("%Lf", pCoefficient)) {
-		printf("You can use only numbers.\n%c: ", symbolCoefficient);
+	while (!scanf("%lf", pCoefficient)) {
+		printf("You can use only numbers.\n"
+               "%c: ", symbolCoefficient);
 		clearInput();
 	}
-
+ 
 	clearInput();
 }
 
 bool getSomeCoefficients(const int countOfCoeffs, ...) {
-	if (countOfCoeffs > 57) return false; // 'z' - 'A' = 57
+	if (countOfCoeffs > 57) return false; // 'z' - 'A' == 57
 
-	va_list psOfCoeffs;
+	va_list psOfCoeffs = {0};
 	va_start(psOfCoeffs, countOfCoeffs);
 
 	for (char lastCoeff = 'A' + countOfCoeffs, coeff = 'A'; coeff < lastCoeff; ++coeff)
-		getCoefficient(va_arg(psOfCoeffs, long double*), coeff);
+		getCoefficient(va_arg(psOfCoeffs, double*), coeff);
 
 	va_end(psOfCoeffs);
 
 	return true;
 }
 
+static void calcAndPutRoots(
+        double a, const double b, const double discriminant,
+        double* const pX1, double* const pX2
+) {
+    double sqrtDiscriminant = sqrt(discriminant),
+            doubleA = 2 * a;
+    
+    *pX1 = (-b + sqrtDiscriminant) / doubleA;
+    *pX2 = (-b - sqrtDiscriminant) / doubleA;
+}
 
-int solveIncompleteQE(const long double a, const long double b, const long double c, long double roots[]) {
+int solveLE(const double a, const double b, double roots[]) {
+    if (isAllZero(2, a, b)) return -1; // infinity roots
+    if (isZero(a)) return 0; // no roots
+    
+    roots[0] = -b / a;
+    return 1;
+}
+
+static int solveIncompleteQE(const double a, const double b, const double c, double roots[]) {
 	if (isZero(a)) {
-		if (isZero(b)) return 0;
-
-		roots[0] = -c / b;
-		return 1;
+		return solveLE(b, c, roots);
 	}
 
 	if (isZero(b)) {
-		if (a * c > 0) return 0;
-		// if (a * c > 0.0) return 0;
+		if (isPositive(a * c)) return 0;
+        if (isZero(c)) {
+            roots[0] = 0;
+            return 1;
+        }
 
-		long double root = sqrt(-c / a);
+		double root = sqrt(-c / a);
 
 		roots[0] = root;
 		roots[1] = -root;
 	}
+    // c == 0
 	else {
 		roots[0] = 0;
-		// roots[0] = 0.0;
 		roots[1] = -b / a;
 	}
 
 	return 2;
 }
 
-int solveCompleteQE(const long double a, const long double b, const long double c, long double roots[]) {
-	long double discriminant = calcDiscriminant(a, b, c);
+static int solveCompleteQE(const double a, const double b, const double c, double roots[]) {
+	double discriminant = calcDiscriminant(a, b, c);
 
-	if (discriminant < 0) return 0;
-	if (discriminant == 0)
-		roots[0] = roots[1] = -b / (2 * a);
-	else {
-		long double x1 = 0, x2 = 0;
-		calcAndPutRoots(a, b, discriminant, &roots[0], &roots[1]);
-		// calcAndPutRoots(a, b, discriminant, roots, (roots + 1));
-	}
+	if (!isPositive(discriminant)) return 0;
+	if (isZero(discriminant)) {
+        roots[0] = -b / (2 * a);
+        return 1;
+    }
+	
+    double x1 = 0, x2 = 0;
+    calcAndPutRoots(a, b, discriminant, &roots[0], &roots[1]);
 
 	return 2;
 }
 
-int solveQE(const long double a, const long double b, const long double c, long double roots[]) {
+int solveQE(const double a, const double b, const double c, double roots[]) {
 	if (isAllZero(3, a, b, c))	return -1; // infinity roots
 	if (isAnyZero(3, a, b, c))
 		return solveIncompleteQE(a, b, c, roots);

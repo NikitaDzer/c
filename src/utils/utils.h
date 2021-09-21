@@ -12,7 +12,8 @@ void clearInput();
 /**
 * Checks if a number is almost zero
 */
-bool isZero(const long double a);
+bool isZero(const double a);
+
 
 /**
 * Checks if at least one of putted numbers is almost zero
@@ -25,18 +26,33 @@ bool isAnyZero(const int countOfnumbers, ...);
 bool isAllZero(const int countOfnumbers, ...);
 
 /**
-* Interactively gets one long double coefficient
+* Checks if putted numbers are equal
 */
-void getCoefficient(long double* const pCoefficient, const char symbolCoefficient);
+bool isEqual(const double a, const double b);
 
 /**
-* Interactively gets from 0 to 57 (A...z) long double coefficients
+* Checks if a number is positive
+*/
+bool isPositive(const double a);
+
+/**
+* Interactively gets one double coefficient
+*/
+void getCoefficient(double* const pCoefficient, const char symbolCoefficient);
+
+/**
+* Interactively gets from 0 to 57 (A...z) double coefficients
 */
 bool getSomeCoefficients(const int countOfCoefficients, ...);
+
+/*
+ * Solves a linear equation and returns number of roots
+ */
+int solveLE(const double a, const double b, double roots[]);
 
 /* 
 * Solves a quadratic equation and returns number of roots
 */
-int solveQE(const long double a, const long double b, const long double c, long double roots[]);
+int solveQE(const double a, const double b, const double c, double roots[]);
 
 #endif
