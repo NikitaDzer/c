@@ -1,8 +1,8 @@
 #ifndef C_READYTESTSQE_H
 #define C_READYTESTSQE_H
 
-/*
- * Ready-made tests for function 'solveQE'
+/*!
+ * @brief Ready-made tests for function 'solveQE'
  */
 void readyTestsQE();
 

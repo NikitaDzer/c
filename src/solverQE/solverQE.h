@@ -1,9 +1,10 @@
 #ifndef __solverQE__
 #define __solverQE__
 
-/**
-* Interactive quadratic equation solver 
-*/
+/*!
+ * @brief Interactive quadratic equation solver
+ * @return Number of solved quadratic equations
+ */
 int solverQE();
 
 #endif
