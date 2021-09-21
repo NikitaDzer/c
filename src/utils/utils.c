@@ -7,8 +7,15 @@
 #include "utils.h"
 
 
+/*!
+ * @brief Number is almost zero, if it's in range (-EPSILON; +EPSILON)
+ */
 static const double EPSILON = 1000 * DBL_EPSILON;
-static const double ACCURACY = 5e-5;
+
+/*!
+ * @brief Accuracy with which two numbers are approximately equal
+ */
+static const double ACCURACY = 1e-5;
 
 void clearInput() {
 	while (getchar() != '\n');
@@ -47,7 +54,7 @@ bool isAllZero(const int countOfNums, ...) {
 bool isEqual(const double a, const double b) {
     if (isZero(a)) return isZero(a - b);
     
-    return fabs((a - b) / a) < ACCURACY;
+    return fabs((a - b) / a) < ACCURACY and fabs((a - b) / b) < ACCURACY;
 }
 
 bool isPositive(const double a) {
