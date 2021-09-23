@@ -1,9 +1,10 @@
-#include "solverQE/solverQE.h"
-#include "utils/testQE/readyTestsQE.h"
+#include "solver/solver.h"
+#include "solveQuadratic/testQuadratic/readyTestsQuadratic.h"
 
 int main(void) {
-    solverQE();
-    // readyTestsQE();
+    // solver();
+    readyTestsQuadratic();
+    
 	return 0;
 }
 
