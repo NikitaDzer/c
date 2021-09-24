@@ -8,7 +8,7 @@ static bool isInRange(const int numberOfRoots) {
     return -1 <= numberOfRoots && numberOfRoots <= 2;
 }
 
-static void printAvailableNumbersOfRoots() {
+static void printAvailableNumbersOfRoots(void) {
     printf("Available numbers of roots:\n"
            "2 - two roots; 1 - one root; 0 - zero roots; -1 - infinity roots.\n");
 }

@@ -4,6 +4,6 @@
 /*!
  * @brief Ready-made tests for function 'solveQuadratic'
  */
-void readyTestsQuadratic();
+void readyTestsQuadratic(void);
 
 #endif //C_READYTESTSQUADRATIC_H

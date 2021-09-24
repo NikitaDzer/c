@@ -1,7 +1,7 @@
 #include "readyTestsQuadratic.h"
 #include "testQuadratic.h"
 
-void readyTestsQuadratic() {
+void readyTestsQuadratic(void) {
     testQuadratic('1', 1, -3, -4, 2, 4, -1);
     testQuadratic('2', 5, 2, 3, 0, 0, 0);
     testQuadratic('3', 0, 0, 0, -1, 0, 0);

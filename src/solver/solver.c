@@ -47,7 +47,7 @@ static void printRootsQuadratic(
     }
 }
 
-static bool stopSolverQuadratic() {
+static bool stopSolverQuadratic(void) {
 	printf("\n\nIf you want to stop me, start the input with 'n' or 'N': ");
 
 	char userChar = getchar();
@@ -62,7 +62,7 @@ static bool stopSolverQuadratic() {
 	return false;
 }
 
-int solver() {
+int solver(void) {
 	printf("\nHello to you, Stranger! I'm Quadratic Equation's Solver.\n"
 		   "I can solve equations of the following form: A*X^2 + B*X + C = 0.\n"
 		   "-------\n");

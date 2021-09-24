@@ -5,6 +5,6 @@
  * @brief Interactive quadratic equation solver
  * @return Number of solved quadratic equations
  */
-int solver();
+int solver(void);
 
 #endif

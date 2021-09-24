@@ -16,28 +16,12 @@ static const double EPSILON = 1000 * DBL_EPSILON;
  */
 static const double ACCURACY = 1e-5;
 
-void clearInput() {
+void clearInput(void) {
 	while (getchar() != '\n');
 }
 
 bool isZero(const double a) {
 	return fabs(a) < EPSILON;
-}
-
-bool isAnyZero(const int countOfNumbers, ...) {
-	va_list numbers = {0};
-	va_start(numbers, countOfNumbers);
-
-	bool wasZero = false;
-	for (int i = 0; i < countOfNumbers; ++i)
-		if (isZero(va_arg(numbers, double))) {
-            wasZero = true;
-            break;
-        }
-    
-	va_end(numbers);
-
-	return wasZero;
 }
 
 bool isAllZero(const int countOfNumbers, ...) {
