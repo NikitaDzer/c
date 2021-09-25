@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "../include/app.h"
 #include "../include/quadratic.h"
 #include "../include/io.h"
