@@ -1,9 +1,13 @@
-#include "solver/solver.h"
-#include "solveQuadratic/test/readyTestsQuadratic.h"
+#include "../test/testQuadratic.h"
+#include "../include/app.h"
 
-int main(void) {
-    // solver();
+#define DEBUG
+
+int main() {
+#ifdef DEBUG
     readyTestsQuadratic();
+#endif
+    app();
     
 	return 0;
 }
